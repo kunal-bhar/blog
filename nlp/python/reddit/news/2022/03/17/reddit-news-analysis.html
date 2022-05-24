@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Reddit Headline Analysis | Kunal Bhargava</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Reddit Headline Analysis" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Biopsying r/worldnews to see if the news for the general public is really all ‘negative’." />
+<meta property="og:description" content="Biopsying r/worldnews to see if the news for the general public is really all ‘negative’." />
+<link rel="canonical" href="https://kunal-bhar.github.io/blog/nlp/python/reddit/news/2022/03/17/reddit-news-analysis.html" />
+<meta property="og:url" content="https://kunal-bhar.github.io/blog/nlp/python/reddit/news/2022/03/17/reddit-news-analysis.html" />
+<meta property="og:site_name" content="Kunal Bhargava" />
+<meta property="og:image" content="https://kunal-bhar.github.io/blog/images/chart-preview.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-03-17T00:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://kunal-bhar.github.io/blog/images/chart-preview.png" />
+<meta property="twitter:title" content="Reddit Headline Analysis" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-03-17T00:00:00-05:00","datePublished":"2022-03-17T00:00:00-05:00","description":"Biopsying r/worldnews to see if the news for the general public is really all ‘negative’.","headline":"Reddit Headline Analysis","image":"https://kunal-bhar.github.io/blog/images/chart-preview.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://kunal-bhar.github.io/blog/nlp/python/reddit/news/2022/03/17/reddit-news-analysis.html"},"url":"https://kunal-bhar.github.io/blog/nlp/python/reddit/news/2022/03/17/reddit-news-analysis.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://kunal-bhar.github.io/blog/feed.xml" title="Kunal Bhargava" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Kunal Bhargava</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About Me</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Reddit Headline Analysis</h1><p class="page-description">Biopsying r/worldnews to see if the news for the general public is really all 'negative'.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2022-03-17T00:00:00-05:00" itemprop="datePublished">
+        Mar 17, 2022
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      3 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#nlp">nlp</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#python">python</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#reddit">reddit</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#news">news</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-justify-center">
+          <div class="px-2">
+
+    <a href="https://github.com/kunal-bhar/blog/tree/master/_notebooks/2022-03-17-reddit-news-analysis.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/kunal-bhar/blog/master?filepath=_notebooks%2F2022-03-17-reddit-news-analysis.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/kunal-bhar/blog/blob/master/_notebooks/2022-03-17-reddit-news-analysis.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+          <div class="px-2">
+  <a href="https://deepnote.com/launch?url=https%3A%2F%2Fgithub.com%2Fkunal-bhar%2Fblog%2Fblob%2Fmaster%2F_notebooks%2F2022-03-17-reddit-news-analysis.ipynb" target="_blank">
+      <img class="notebook-badge-image" src="/blog/assets/badges/deepnote.svg" alt="Launch in Deepnote"/>
+  </a>
+</div>
+
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul id="toc" class="section-nav">
+<li class="toc-entry toc-h2"><a href="#Project-At-A-Glance">Project At A Glance </a></li>
+<li class="toc-entry toc-h2"><a href="#Dependencies">Dependencies </a></li>
+<li class="toc-entry toc-h2"><a href="#Dataset-Initialization">Dataset Initialization </a></li>
+<li class="toc-entry toc-h2"><a href="#Using-NLTK's-Sentiment-Intensity-Analyzer">Using NLTK&#39;s Sentiment Intensity Analyzer </a></li>
+<li class="toc-entry toc-h2"><a href="#Generating-DataFrame-with-Polarity-Scores">Generating DataFrame with Polarity Scores </a></li>
+<li class="toc-entry toc-h2"><a href="#Labelling-and-Classification">Labelling and Classification </a></li>
+<li class="toc-entry toc-h2"><a href="#Examples">Examples </a></li>
+<li class="toc-entry toc-h2"><a href="#Results-and-Visualization">Results and Visualization </a></li>
+<li class="toc-entry toc-h2"><a href="#Exporting-Labelled-Dataset-as-(.csv)">Exporting Labelled Dataset as (.csv) </a></li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2022-03-17-reddit-news-analysis.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Project-At-A-Glance">
+<a class="anchor" href="#Project-At-A-Glance" aria-hidden="true"><span class="octicon octicon-link"></span></a>Project At A Glance<a class="anchor-link" href="#Project-At-A-Glance"> </a>
+</h2>
+<p><code>Objective</code>: Discover sentiments associated with posts in the 'Hot' section of r/worldnews and classify them as Positive, Negative and Neutral.</p>
+<p><code>Data</code>: 754x1 Dataset of the sub-reddit's headlines scraped using the Reddit API. <a href="https://github.com/kunal-bhar/nlp/blob/main/D16%2C17-%20Reddit%20API-%20Scraping%20and%20Analysis/reddit-scraper-init.ipynb">[View Scraper Notebook]</a> <a href="https://github.com/kunal-bhar/nlp/blob/main/D16%2C17-%20Reddit%20API-%20Scraping%20and%20Analysis/reddit-headlines.csv">[Download]</a></p>
+<p><code>Implementation</code>: Reddit API, PRAW, NLTK's Sentiment Intensity Analyzer (SIA)</p>
+<p><code>Results</code>:</p>
+<ul>
+<li>More than half of the headlines were classified as Neutral (~55%).</li>
+<li>However, Negative Headlines (33%) still outweigh Positive Headlines (12%) by about 2.75x. </li>
+<li>Dataset generated with labelled values to formulate models with better intelligence in the future. </li>
+</ul>
+<p><code>Deployment</code>: View this project on <a href="https://github.com/kunal-bhar/nlp/tree/main/D16%2C17-%20Reddit%20API-%20Scraping%20and%20Analysis">GitHub</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Dependencies">
+<a class="anchor" href="#Dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dependencies<a class="anchor-link" href="#Dependencies"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pprint</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Dataset-Initialization">
+<a class="anchor" href="#Dataset-Initialization" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dataset Initialization<a class="anchor-link" href="#Dataset-Initialization"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'reddit-headlines.csv'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>headlines</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>Mass graves dug in the besieged Ukrainian city...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>British aircraft carrier leading massive fleet...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>Spain detains $600 million yacht linked to Rus...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>Photo shows officials taking down the Russian ...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>Marina Ovsyannikova: Russian journalist tells ...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Using-NLTK's-Sentiment-Intensity-Analyzer">
+<a class="anchor" href="#Using-NLTK's-Sentiment-Intensity-Analyzer" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using NLTK's Sentiment Intensity Analyzer<a class="anchor-link" href="#Using-NLTK's-Sentiment-Intensity-Analyzer"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">nltk</span>
+<span class="kn">from</span> <span class="nn">nltk.sentiment.vader</span> <span class="kn">import</span> <span class="n">SentimentIntensityAnalyzer</span> <span class="k">as</span> <span class="n">SIA</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sia</span><span class="o">=</span> <span class="n">SIA</span><span class="p">()</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">'headlines'</span><span class="p">]:</span>
+    <span class="n">pol_score</span> <span class="o">=</span> <span class="n">sia</span><span class="o">.</span><span class="n">polarity_scores</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="n">pol_score</span><span class="p">[</span><span class="s1">'headline'</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pol_score</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="n">results</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[{'compound': -0.7579,
+  'headline': 'Mass graves dug in the besieged Ukrainian city of Mariupol, as locals bury their '
+              'dead',
+  'neg': 0.333,
+  'neu': 0.667,
+  'pos': 0.0},
+ {'compound': 0.0,
+  'headline': 'British aircraft carrier leading massive fleet off Norway',
+  'neg': 0.0,
+  'neu': 1.0,
+  'pos': 0.0},
+ {'compound': 0.0,
+  'headline': 'Spain detains $600 million yacht linked to Russian oligarch: Reuters',
+  'neg': 0.0,
+  'neu': 1.0,
+  'pos': 0.0}]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Generating-DataFrame-with-Polarity-Scores">
+<a class="anchor" href="#Generating-DataFrame-with-Polarity-Scores" aria-hidden="true"><span class="octicon octicon-link"></span></a>Generating DataFrame with Polarity Scores<a class="anchor-link" href="#Generating-DataFrame-with-Polarity-Scores"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_records</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>neg</th>
+      <th>neu</th>
+      <th>pos</th>
+      <th>compound</th>
+      <th>headline</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>380</th>
+      <td>0.506</td>
+      <td>0.494</td>
+      <td>0.000</td>
+      <td>-0.9231</td>
+      <td>Tigray war has seen up to half a million dead ...</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>0.289</td>
+      <td>0.711</td>
+      <td>0.000</td>
+      <td>-0.4291</td>
+      <td>'Why? Why? Why?' Ukraine's Mariupol descends i...</td>
+    </tr>
+    <tr>
+      <th>660</th>
+      <td>0.000</td>
+      <td>0.806</td>
+      <td>0.194</td>
+      <td>0.3400</td>
+      <td>Ukraine's 'hero' President Zelensky set to rec...</td>
+    </tr>
+    <tr>
+      <th>725</th>
+      <td>0.100</td>
+      <td>0.594</td>
+      <td>0.306</td>
+      <td>0.6705</td>
+      <td>There is no life for Ukrainian people: Boxing ...</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Labelling-and-Classification">
+<a class="anchor" href="#Labelling-and-Classification" aria-hidden="true"><span class="octicon octicon-link"></span></a>Labelling and Classification<a class="anchor-link" href="#Labelling-and-Classification"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'compound'</span><span class="p">]</span><span class="o">&gt;</span><span class="mf">0.33</span><span class="p">,</span> <span class="s1">'label'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'compound'</span><span class="p">]</span><span class="o">&lt;-</span><span class="mf">0.33</span><span class="p">,</span> <span class="s1">'label'</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>neg</th>
+      <th>neu</th>
+      <th>pos</th>
+      <th>compound</th>
+      <th>headline</th>
+      <th>label</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>461</th>
+      <td>0.273</td>
+      <td>0.727</td>
+      <td>0.000</td>
+      <td>-0.4588</td>
+      <td>Trudeau and almost every Canadian MP banned fr...</td>
+      <td>-1</td>
+    </tr>
+    <tr>
+      <th>482</th>
+      <td>0.000</td>
+      <td>0.647</td>
+      <td>0.353</td>
+      <td>0.5994</td>
+      <td>Help yourself by helping us, Ukraine's Zelensk...</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>420</th>
+      <td>0.000</td>
+      <td>1.000</td>
+      <td>0.000</td>
+      <td>0.0000</td>
+      <td>Russia, India explore opening alternative paym...</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>748</th>
+      <td>0.239</td>
+      <td>0.761</td>
+      <td>0.000</td>
+      <td>-0.2960</td>
+      <td>Russia's state TV hit by stream of resignations</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre> 0    414
+-1    247
+ 1     93
+Name: label, dtype: int64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre> 0    54.907162
+-1    32.758621
+ 1    12.334218
+Name: label, dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Examples">
+<a class="anchor" href="#Examples" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples<a class="anchor-link" href="#Examples"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">'Positive Headlines:</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">headline</span><span class="p">)[:</span><span class="mi">5</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1"> Negative Headlines:</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">headline</span><span class="p">)[:</span><span class="mi">5</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="se">\n\n</span><span class="s1"> Neutral Headlines:</span><span class="se">\n</span><span class="s1">'</span><span class="p">)</span>
+<span class="n">pprint</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">'label'</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">headline</span><span class="p">)[:</span><span class="mi">5</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Positive Headlines:
+
+['Tibetans seek justice after 63 years of uprising against Chinese rule',
+ "The Ministry of Foreign Affairs on Tuesday (March 15) praised a Russian woman for her courage after she held up an anti-war sign on live Russian TV. MOFA head: 'It takes courage to be the voice of "
+ "conscience'.",
+ 'Saudi Arabia considers accepting yuan for oil sales',
+ 'Russia and Ukraine looking for compromise in peace talks',
+ 'Turkmenistan leader’s son wins presidential election']
+
+
+ Negative Headlines:
+
+['Mass graves dug in the besieged Ukrainian city of Mariupol, as locals bury their dead',
+ "Russia's former chief prosecutor says oligarch Roman Abramovich amassed his fortune through a 'fraudulent scheme'",
+ 'UN makes March 15 International Day to Combat Islamophobia',
+ 'Not violation of sanctions but Russian oil deal could put India on wrong side of history, says US',
+ "'Why? Why? Why?' Ukraine's Mariupol descends into despair"]
+
+
+ Neutral Headlines:
+
+['British aircraft carrier leading massive fleet off Norway',
+ 'Spain detains $600 million yacht linked to Russian oligarch: Reuters',
+ 'Photo shows officials taking down the Russian flag after Putin gets the boot from Council of Europe',
+ 'Marina Ovsyannikova: Russian journalist tells of 14-hour interrogation',
+ 'China wary of being impacted by Russia sanctions: Foreign Minister']
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Results-and-Visualization">
+<a class="anchor" href="#Results-and-Visualization" aria-hidden="true"><span class="octicon octicon-link"></span></a>Results and Visualization<a class="anchor-link" href="#Results-and-Visualization"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">label</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">counts</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">counts</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">([</span><span class="s1">'Negative'</span><span class="p">,</span> <span class="s1">'Neutral'</span><span class="p">,</span> <span class="s1">'Positive'</span><span class="p">])</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'Percentage'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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">
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Exporting-Labelled-Dataset-as-(.csv)">
+<a class="anchor" href="#Exporting-Labelled-Dataset-as-(.csv)" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exporting Labelled Dataset as (.csv)<a class="anchor-link" href="#Exporting-Labelled-Dataset-as-(.csv)"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_export</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">'headline'</span><span class="p">,</span> <span class="s1">'label'</span><span class="p">]]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_export</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>headline</th>
+      <th>label</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>399</th>
+      <td>EU 'Concerned' Over Disrupted Gas Supply, Shoo...</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>709</th>
+      <td>Woman fearing for family in Ukraine urges Cana...</td>
+      <td>-1</td>
+    </tr>
+    <tr>
+      <th>618</th>
+      <td>New Zealand cuts fuel tax and halves public tr...</td>
+      <td>-1</td>
+    </tr>
+    <tr>
+      <th>560</th>
+      <td>Slovakia meets NATO defence spending commitmen...</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_export</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">'reddit-headlines-labelled.csv'</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'utf-8'</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="kunal-bhar/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/nlp/python/reddit/news/2022/03/17/reddit-news-analysis.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/kunal-bhar" target="_blank" title="kunal-bhar"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/kunalbhargava" target="_blank" title="kunalbhargava"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#linkedin"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
