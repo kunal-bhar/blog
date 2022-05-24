@@ -2,8 +2,8 @@
 toc: true
 layout: post
 description: Probability Distributions using Python.
-categories: [markdown]
-title: probplotlib- OpenSource Python Library
+categories: [python, data, math, probability, visualizations]
+title: probplotlib- Open Source Python Library
 ---
 # Project At A Glance
 `Objective`: Higher-order mathematical operations in Python3.
