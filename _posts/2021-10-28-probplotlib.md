@@ -1,12 +1,12 @@
 ---
 toc: true
 layout: post
-description: Probability Distributions using Python.
-categories: [python, data, math, probability, visualizations]
+description: Probability Distributions for Python.
+categories: [python, math, probability, visualizations]
 title: probplotlib- Open Source Python Library
 ---
-# Project At A Glance
-`Objective`: Higher-order mathematical operations in Python3.
+## Project At A Glance
+`Objective`: Higher-order mathematical operations using Python3.
 
 `Implementation`: A lightwight library capable of parsing data directly as Probability Distributions - available as a Python installation through pip.
 
@@ -53,7 +53,7 @@ in a niche that is scarce in options.
 
 probplotlib has the following operative methods:
 
-- ` + `: uses [Dunder Methods](https://docs.python.org/3/reference/datamodel.html#special-method-names) for facilitating dist-additions.
+- `+` : uses [Dunder Methods](https://docs.python.org/3/reference/datamodel.html#special-method-names) for facilitating dist-additions.
 
 
 - `calculate_mean()`: returns the mean of a distribution.
