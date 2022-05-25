@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Golang Detection from Stack Overflow Questions | Kunal Bhargava</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Golang Detection from Stack Overflow Questions" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Pipelining an NLP solution that provides semantic value for English homonyms." />
+<meta property="og:description" content="Pipelining an NLP solution that provides semantic value for English homonyms." />
+<link rel="canonical" href="https://kunal-bhar.github.io/blog/nlp/python/spacy/english/intelligent/2022/05/24/golang-detection.html" />
+<meta property="og:url" content="https://kunal-bhar.github.io/blog/nlp/python/spacy/english/intelligent/2022/05/24/golang-detection.html" />
+<meta property="og:site_name" content="Kunal Bhargava" />
+<meta property="og:image" content="https://kunal-bhar.github.io/blog/images/chart-preview.png" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-05-24T00:00:00-05:00" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta property="twitter:image" content="https://kunal-bhar.github.io/blog/images/chart-preview.png" />
+<meta property="twitter:title" content="Golang Detection from Stack Overflow Questions" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-05-24T00:00:00-05:00","datePublished":"2022-05-24T00:00:00-05:00","description":"Pipelining an NLP solution that provides semantic value for English homonyms.","headline":"Golang Detection from Stack Overflow Questions","image":"https://kunal-bhar.github.io/blog/images/chart-preview.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://kunal-bhar.github.io/blog/nlp/python/spacy/english/intelligent/2022/05/24/golang-detection.html"},"url":"https://kunal-bhar.github.io/blog/nlp/python/spacy/english/intelligent/2022/05/24/golang-detection.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://kunal-bhar.github.io/blog/feed.xml" title="Kunal Bhargava" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Kunal Bhargava</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About Me</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Golang Detection from Stack Overflow Questions</h1><p class="page-description">Pipelining an NLP solution that provides semantic value for English homonyms.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2022-05-24T00:00:00-05:00" itemprop="datePublished">
+        May 24, 2022
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      6 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#nlp">nlp</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#python">python</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#spacy">spacy</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#english">english</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#intelligent">intelligent</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-justify-center">
+          <div class="px-2">
+
+    <a href="https://github.com/kunal-bhar/blog/tree/master/_notebooks/1-golang-detection.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/kunal-bhar/blog/master?filepath=_notebooks%2F1-golang-detection.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/kunal-bhar/blog/blob/master/_notebooks/1-golang-detection.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+          <div class="px-2">
+  <a href="https://deepnote.com/launch?url=https%3A%2F%2Fgithub.com%2Fkunal-bhar%2Fblog%2Fblob%2Fmaster%2F_notebooks%2F1-golang-detection.ipynb" target="_blank">
+      <img class="notebook-badge-image" src="/blog/assets/badges/deepnote.svg" alt="Launch in Deepnote"/>
+  </a>
+</div>
+
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul id="toc" class="section-nav">
+<li class="toc-entry toc-h2"><a href="#Project-At-A-Glance">Project At A Glance </a></li>
+<li class="toc-entry toc-h2"><a href="#Initialization">Initialization </a></li>
+<li class="toc-entry toc-h2"><a href="#Dataset-Features">Dataset Features </a></li>
+<li class="toc-entry toc-h2"><a href="#Primitive-Function-for-'go'">Primitive Function for &#39;go&#39; </a></li>
+<li class="toc-entry toc-h2"><a href="#spaCy-Injection">spaCy Injection </a></li>
+<li class="toc-entry toc-h2"><a href="#Text-Relationships-and-Dependencies">Text Relationships and Dependencies </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#Render">Render </a></li>
+<li class="toc-entry toc-h3"><a href="#Explanation">Explanation </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#Data-Manipulation">Data Manipulation </a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#Contains-'go'">Contains &#39;go&#39; </a></li>
+<li class="toc-entry toc-h3"><a href="#POS==-Noun">POS== Noun </a></li>
+<li class="toc-entry toc-h3"><a href="#Has-Tag==-'go'">Has Tag== &#39;go&#39; </a></li>
+<li class="toc-entry toc-h3"><a href="#POS!=-Verb">POS!= Verb </a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#Splitting-and-Benchmarking">Splitting and Benchmarking </a></li>
+<li class="toc-entry toc-h2"><a href="#Using-our-model-on-the-detectable-class">Using our model on the detectable class </a></li>
+<li class="toc-entry toc-h2"><a href="#Metrics">Metrics </a></li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/1-golang-detection.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Project-At-A-Glance">
+<a class="anchor" href="#Project-At-A-Glance" aria-hidden="true"><span class="octicon octicon-link"></span></a>Project At A Glance<a class="anchor-link" href="#Project-At-A-Glance"> </a>
+</h2>
+<p><code>Objective</code>: Off the top of my head, the word 'go' can be represented as a verb, a noun, or a general part of a string. The goal here is to build an intelligent solution that analyzes textual relationships and locates all instances of 'golang' from programming queries.</p>
+<p><code>Data</code>: StackSample: 10% of Stack Overflow Q&amp;A. <a href="https://www.kaggle.com/datasets/stackoverflow/stacksample">[Download]</a></p>
+<p><code>Implementation</code>: spaCy's en_core_web Model, Part of Speech, Sentence Dependencies, Rule-Based Matching, Tagging</p>
+<p><code>Results</code>:</p>
+<ul>
+<li>
+<p>The model performs best a small (_sm) model with the following conditions:</p>
+<p>[i] Question Tag== 'go'</p>
+<p>[ii] Part of Speech!= 'verb'.</p>
+</li>
+<li>
+<p>In the above case, the model is able to collect all instances of golang.</p>
+</li>
+<li>Therefore, Recall= (1.00) while Precision = Accuracy = (0.891) </li>
+<li>The food for thought enabled by this project led to LangWhich: a much more concise, CLI implementation that works for all programming languages. 
+<a href="https://kunal-bhar.github.io/blog/nlp/python/spacy//english/cli/intelligent/2022/03/31/langwhich.html">[View LangWhich]</a>
+</li>
+</ul>
+<p><code>Deployment</code>: View this project on <a href="https://github.com/kunal-bhar/nlp/tree/main/D20-%20Hour-Wise%20Temperature%20Forecasting">GitHub</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Initialization">
+<a class="anchor" href="#Initialization" aria-hidden="true"><span class="octicon octicon-link"></span></a>Initialization<a class="anchor-link" href="#Initialization"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'Questions.csv'</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">1_000_000</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s1">'Title'</span><span class="p">,</span> <span class="s1">'Id'</span><span class="p">],</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'ISO-8859-1'</span><span class="p">))</span>
+<span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">'Title'</span><span class="p">]]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Dataset-Features">
+<a class="anchor" href="#Dataset-Features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Dataset Features<a class="anchor-link" href="#Dataset-Features"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 1000000 entries, 0 to 999999
+Data columns (total 2 columns):
+ #   Column  Non-Null Count    Dtype 
+---  ------  --------------    ----- 
+ 0   Id      1000000 non-null  int64 
+ 1   Title   1000000 non-null  object
+dtypes: int64(1), object(1)
+memory usage: 15.3+ MB
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">random</span>
+<span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">titles</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>['Call a click on a newly added dom element',
+ 'some confusion about kendo grid databind',
+ 'display Jquery GIF onload Jquery Tabs',
+ 'Port Chrome Extension to Firefox, Safari, IE',
+ 'Uploading A SQL Server Script?',
+ 'adding a tab character in swift',
+ '^M in the diff using svn',
+ 'Can I open an HTML file in Ace Editor?',
+ 'Cast value type to generic',
+ 'What do triple curly braces indicate?',
+ "Can't get javascript to run onsubmit",
+ 'Wordpress - Dynamic "static" permalink based on permalink taxonomy',
+ 'Can depth peeling be implemented without any shader?',
+ 'count(*) Does not return 0 when using group by in MySQL',
+ 'How to call action on onclick-javascript in ruby on rails',
+ 'How to translate Xcode 3 properties to Xcode 4',
+ 'Java-JFXpanel refresh page cause JVMã\x80\x80crash -- Threading issue',
+ "Can't seem to figure out why the InnerHTML statements are not working",
+ 'How I can validate only some validation groups based on some fields in the form itself in Symfony2',
+ 'Drawable vs Single reusable Bitmap better with memory?']</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Primitive-Function-for-'go'">
+<a class="anchor" href="#Primitive-Function-for-'go'" aria-hidden="true"><span class="octicon octicon-link"></span></a>Primitive Function for 'go'<a class="anchor-link" href="#Primitive-Function-for-'go'"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">has_golang</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s1">'go'</span> <span class="ow">in</span> <span class="n">text</span> <span class="c1"># basic string-matching ~ unsatisfactory output</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">title</span> <span class="k">for</span> <span class="n">title</span> <span class="ow">in</span> <span class="n">titles</span> <span class="k">if</span> <span class="n">has_golang</span><span class="p">(</span><span class="n">title</span><span class="p">))</span>
+<span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">)]</span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>['My website got hacked... What should I do?',
+ "DVCS Choices - What's good for Windows?"]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="spaCy-Injection">
+<a class="anchor" href="#spaCy-Injection" aria-hidden="true"><span class="octicon octicon-link"></span></a>spaCy Injection<a class="anchor-link" href="#spaCy-Injection"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">spacy</span>
+
+<span class="c1">#!python -m spacy download en_core_web_sm</span>
+<span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">'en_core_web_sm'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="p">[</span><span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">nlp</span><span class="p">(</span><span class="s1">'Go is a both a verb and a programming language.'</span><span class="p">)]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[Go, is, a, both, a, verb, and, a, programming, language, .]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="s1">'Go is a both a verb and a programming language.'</span><span class="p">)</span>
+<span class="n">t</span> <span class="o">=</span><span class="n">doc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>spacy.tokens.token.Token</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Text-Relationships-and-Dependencies">
+<a class="anchor" href="#Text-Relationships-and-Dependencies" aria-hidden="true"><span class="octicon octicon-link"></span></a>Text Relationships and Dependencies<a class="anchor-link" href="#Text-Relationships-and-Dependencies"> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Render">
+<a class="anchor" href="#Render" aria-hidden="true"><span class="octicon octicon-link"></span></a>Render<a class="anchor-link" href="#Render"> </a>
+</h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">spacy</span> <span class="kn">import</span> <span class="n">displacy</span>
+<span class="n">displacy</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="c1"># token-relationships</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea ">
+<span class="tex2jax_ignore"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:lang="en" id="5b378726a18143f3a02fc916ed1f9418-0" class="displacy" width="1800" height="487.0" direction="ltr" style="max-width: none; height: 487.0px; color: #000000; background: #ffffff; font-family: Arial; direction: ltr">
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="397.0">
+    <tspan class="displacy-word" fill="currentColor" x="50">Go</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="50">VERB</tspan>
+</text>
+
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="397.0">
+    <tspan class="displacy-word" fill="currentColor" x="225">is</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="225">AUX</tspan>
+</text>
+
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="397.0">
+    <tspan class="displacy-word" fill="currentColor" x="400">a</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="400">DET</tspan>
+</text>
+
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="397.0">
+    <tspan class="displacy-word" fill="currentColor" x="575">both</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="575">CCONJ</tspan>
+</text>
+
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="397.0">
+    <tspan class="displacy-word" fill="currentColor" x="750">a</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="750">DET</tspan>
+</text>
+
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="397.0">
+    <tspan class="displacy-word" fill="currentColor" x="925">verb</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="925">NOUN</tspan>
+</text>
+
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="397.0">
+    <tspan class="displacy-word" fill="currentColor" x="1100">and</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="1100">CCONJ</tspan>
+</text>
+
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="397.0">
+    <tspan class="displacy-word" fill="currentColor" x="1275">a</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="1275">DET</tspan>
+</text>
+
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="397.0">
+    <tspan class="displacy-word" fill="currentColor" x="1450">programming</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="1450">NOUN</tspan>
+</text>
+
+<text class="displacy-token" fill="currentColor" text-anchor="middle" y="397.0">
+    <tspan class="displacy-word" fill="currentColor" x="1625">language.</tspan>
+    <tspan class="displacy-tag" dy="2em" fill="currentColor" x="1625">NOUN</tspan>
+</text>
+
+<g class="displacy-arrow">
+    <path class="displacy-arc" id="arrow-5b378726a18143f3a02fc916ed1f9418-0-0" stroke-width="2px" d="M70,352.0 C70,264.5 210.0,264.5 210.0,352.0" fill="none" stroke="currentColor"></path>
+    <text dy="1.25em" style="font-size: 0.8em; letter-spacing: 1px">
+        <textpath xlink:href="#arrow-5b378726a18143f3a02fc916ed1f9418-0-0" class="displacy-label" startoffset="50%" side="left" fill="currentColor" text-anchor="middle">csubj</textpath>
+    </text>
+    <path class="displacy-arrowhead" d="M70,354.0 L62,342.0 78,342.0" fill="currentColor"></path>
+</g>
+
+<g class="displacy-arrow">
+    <path class="displacy-arc" id="arrow-5b378726a18143f3a02fc916ed1f9418-0-1" stroke-width="2px" d="M420,352.0 C420,89.5 920.0,89.5 920.0,352.0" fill="none" stroke="currentColor"></path>
+    <text dy="1.25em" style="font-size: 0.8em; letter-spacing: 1px">
+        <textpath xlink:href="#arrow-5b378726a18143f3a02fc916ed1f9418-0-1" class="displacy-label" startoffset="50%" side="left" fill="currentColor" text-anchor="middle">det</textpath>
+    </text>
+    <path class="displacy-arrowhead" d="M420,354.0 L412,342.0 428,342.0" fill="currentColor"></path>
+</g>
+
+<g class="displacy-arrow">
+    <path class="displacy-arc" id="arrow-5b378726a18143f3a02fc916ed1f9418-0-2" stroke-width="2px" d="M595,352.0 C595,177.0 915.0,177.0 915.0,352.0" fill="none" stroke="currentColor"></path>
+    <text dy="1.25em" style="font-size: 0.8em; letter-spacing: 1px">
+        <textpath xlink:href="#arrow-5b378726a18143f3a02fc916ed1f9418-0-2" class="displacy-label" startoffset="50%" side="left" fill="currentColor" text-anchor="middle">preconj</textpath>
+    </text>
+    <path class="displacy-arrowhead" d="M595,354.0 L587,342.0 603,342.0" fill="currentColor"></path>
+</g>
+
+<g class="displacy-arrow">
+    <path class="displacy-arc" id="arrow-5b378726a18143f3a02fc916ed1f9418-0-3" stroke-width="2px" d="M770,352.0 C770,264.5 910.0,264.5 910.0,352.0" fill="none" stroke="currentColor"></path>
+    <text dy="1.25em" style="font-size: 0.8em; letter-spacing: 1px">
+        <textpath xlink:href="#arrow-5b378726a18143f3a02fc916ed1f9418-0-3" class="displacy-label" startoffset="50%" side="left" fill="currentColor" text-anchor="middle">det</textpath>
+    </text>
+    <path class="displacy-arrowhead" d="M770,354.0 L762,342.0 778,342.0" fill="currentColor"></path>
+</g>
+
+<g class="displacy-arrow">
+    <path class="displacy-arc" id="arrow-5b378726a18143f3a02fc916ed1f9418-0-4" stroke-width="2px" d="M245,352.0 C245,2.0 925.0,2.0 925.0,352.0" fill="none" stroke="currentColor"></path>
+    <text dy="1.25em" style="font-size: 0.8em; letter-spacing: 1px">
+        <textpath xlink:href="#arrow-5b378726a18143f3a02fc916ed1f9418-0-4" class="displacy-label" startoffset="50%" side="left" fill="currentColor" text-anchor="middle">attr</textpath>
+    </text>
+    <path class="displacy-arrowhead" d="M925.0,354.0 L933.0,342.0 917.0,342.0" fill="currentColor"></path>
+</g>
+
+<g class="displacy-arrow">
+    <path class="displacy-arc" id="arrow-5b378726a18143f3a02fc916ed1f9418-0-5" stroke-width="2px" d="M945,352.0 C945,264.5 1085.0,264.5 1085.0,352.0" fill="none" stroke="currentColor"></path>
+    <text dy="1.25em" style="font-size: 0.8em; letter-spacing: 1px">
+        <textpath xlink:href="#arrow-5b378726a18143f3a02fc916ed1f9418-0-5" class="displacy-label" startoffset="50%" side="left" fill="currentColor" text-anchor="middle">cc</textpath>
+    </text>
+    <path class="displacy-arrowhead" d="M1085.0,354.0 L1093.0,342.0 1077.0,342.0" fill="currentColor"></path>
+</g>
+
+<g class="displacy-arrow">
+    <path class="displacy-arc" id="arrow-5b378726a18143f3a02fc916ed1f9418-0-6" stroke-width="2px" d="M1295,352.0 C1295,177.0 1615.0,177.0 1615.0,352.0" fill="none" stroke="currentColor"></path>
+    <text dy="1.25em" style="font-size: 0.8em; letter-spacing: 1px">
+        <textpath xlink:href="#arrow-5b378726a18143f3a02fc916ed1f9418-0-6" class="displacy-label" startoffset="50%" side="left" fill="currentColor" text-anchor="middle">det</textpath>
+    </text>
+    <path class="displacy-arrowhead" d="M1295,354.0 L1287,342.0 1303,342.0" fill="currentColor"></path>
+</g>
+
+<g class="displacy-arrow">
+    <path class="displacy-arc" id="arrow-5b378726a18143f3a02fc916ed1f9418-0-7" stroke-width="2px" d="M1470,352.0 C1470,264.5 1610.0,264.5 1610.0,352.0" fill="none" stroke="currentColor"></path>
+    <text dy="1.25em" style="font-size: 0.8em; letter-spacing: 1px">
+        <textpath xlink:href="#arrow-5b378726a18143f3a02fc916ed1f9418-0-7" class="displacy-label" startoffset="50%" side="left" fill="currentColor" text-anchor="middle">amod</textpath>
+    </text>
+    <path class="displacy-arrowhead" d="M1470,354.0 L1462,342.0 1478,342.0" fill="currentColor"></path>
+</g>
+
+<g class="displacy-arrow">
+    <path class="displacy-arc" id="arrow-5b378726a18143f3a02fc916ed1f9418-0-8" stroke-width="2px" d="M945,352.0 C945,2.0 1625.0,2.0 1625.0,352.0" fill="none" stroke="currentColor"></path>
+    <text dy="1.25em" style="font-size: 0.8em; letter-spacing: 1px">
+        <textpath xlink:href="#arrow-5b378726a18143f3a02fc916ed1f9418-0-8" class="displacy-label" startoffset="50%" side="left" fill="currentColor" text-anchor="middle">conj</textpath>
+    </text>
+    <path class="displacy-arrowhead" d="M1625.0,354.0 L1633.0,342.0 1617.0,342.0" fill="currentColor"></path>
+</g>
+</svg></span>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Explanation">
+<a class="anchor" href="#Explanation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Explanation<a class="anchor-link" href="#Explanation"> </a>
+</h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">spacy</span><span class="o">.</span><span class="n">explain</span><span class="p">(</span><span class="s1">'det'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>'determiner'</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">pos_</span><span class="p">,</span> <span class="n">t</span><span class="o">.</span><span class="n">dep_</span><span class="p">)</span> <span class="c1"># pos = part of speech, dep = dependency</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Go VERB csubj
+is AUX ROOT
+a DET det
+both CCONJ preconj
+a DET det
+verb NOUN attr
+and CCONJ cc
+a DET det
+programming NOUN amod
+language NOUN conj
+. PUNCT punct
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Data-Manipulation">
+<a class="anchor" href="#Data-Manipulation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Data Manipulation<a class="anchor-link" href="#Data-Manipulation"> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Contains-'go'">
+<a class="anchor" href="#Contains-'go'" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contains 'go'<a class="anchor-link" href="#Contains-'go'"> </a>
+</h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'Questions.csv'</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">2_000_000</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s1">'Title'</span><span class="p">,</span> <span class="s1">'Id'</span><span class="p">],</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'ISO-8859-1'</span><span class="p">))</span>
+
+<span class="n">titles</span> <span class="o">=</span> <span class="p">[</span><span class="n">_</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s1">'Title'</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'go'</span><span class="p">)][</span><span class="s1">'Title'</span><span class="p">]]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">random</span><span class="o">.</span><span class="n">choices</span><span class="p">(</span><span class="n">titles</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>['Trying to understand/get working a k-means clustering algorithem in MySQL',
+ 'Google Cloud:- Not able to access Visual SVN via https',
+ 'How can I use a "For" loop to map multiple polygons with the leaflet within shiny in R?',
+ 'Remove marker from Google Maps API V3',
+ 'Config Mongodb in Cakephp 2.8.5',
+ 'Can a single Meteor instance listen and react to multiple MongoDB databases?',
+ 'Going from Scrum to Kanban near "release"']</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s1">'en_core_web_sm'</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[</span><span class="s1">'ner'</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="POS==-Noun">
+<a class="anchor" href="#POS==-Noun" aria-hidden="true"><span class="octicon octicon-link"></span></a>POS== Noun<a class="anchor-link" href="#POS==-Noun"> </a>
+</h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+
+<span class="k">def</span> <span class="nf">has_golang</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">lower_</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'go'</span><span class="p">,</span> <span class="s1">'golang'</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">pos_</span> <span class="o">==</span> <span class="s1">'NOUN'</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span> 
+    <span class="k">return</span> <span class="kc">False</span>
+<span class="c1"># Collecting data that has 'go'/'golang' where pos = Noun</span>
+
+<span class="n">g</span> <span class="o">=</span> <span class="p">(</span><span class="n">doc</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">nlp</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">titles</span><span class="p">)</span> <span class="k">if</span> <span class="n">has_golang</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span> <span class="c1"># nlp.pipe() added to optimize; takes doc as input instead of tokens</span>
+<span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">g</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">)]</span> 
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Wall time: 7.03 s
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[Deploying multiple Java web apps to Glassfish in one go,
+ Removing all event handlers in one go,
+ Paypal integration to serve multiple sellers in one go for a shopping site,
+ How do I disable multiple listboxes in one go using jQuery?,
+ multi package makefile example for go,
+ Google's 'go' and scope/functions,
+ Where is App.config go after publishing?,
+ SOAPUI &amp; Groovy Scripts, executing multiple SQL statements in one go,
+ What's the simplest way to edit conflicted files in one go when using git and an editor like Vim or textmate?,
+ Import large chunk of data into Google App Engine Data Store at one go,
+ Saving all nested form objects in one go,
+ what's the state of go language IDE support?,
+ Decrypt many PDFs in one go using pdftk,
+ How do I allocate memory for an array in the go programming language?,
+ Is message passing via channels in go guaranteed to be non-blocking?]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Has-Tag==-'go'">
+<a class="anchor" href="#Has-Tag==-'go'" aria-hidden="true"><span class="octicon octicon-link"></span></a>Has Tag== 'go'<a class="anchor-link" href="#Has-Tag==-'go'"> </a>
+</h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_tags</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'Tags.csv'</span><span class="p">)</span>
+<span class="n">go_ids</span> <span class="o">=</span> <span class="n">df_tags</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s1">'Tag'</span><span class="p">]</span> <span class="o">==</span> <span class="s1">'go'</span><span class="p">][</span><span class="s1">'Id'</span><span class="p">]</span>
+<span class="c1"># Collecting data from the Tags dataset with ID = 'go'</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="POS!=-Verb">
+<a class="anchor" href="#POS!=-Verb" aria-hidden="true"><span class="octicon octicon-link"></span></a>POS!= Verb<a class="anchor-link" href="#POS!=-Verb"> </a>
+</h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">has_go_token</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">doc</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">lower_</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'go'</span><span class="p">,</span> <span class="s1">'golang'</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">pos_</span> <span class="o">!=</span> <span class="s1">'VERB'</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span>
+<span class="c1"># Collecting data with 'go'/'golang' where pos =! verb</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Splitting-and-Benchmarking">
+<a class="anchor" href="#Splitting-and-Benchmarking" aria-hidden="true"><span class="octicon octicon-link"></span></a>Splitting and Benchmarking<a class="anchor-link" href="#Splitting-and-Benchmarking"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">all_go_sentences</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s1">'Id'</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">go_ids</span><span class="p">)][</span><span class="s1">'Title'</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">detectable</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">nlp</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">all_go_sentences</span><span class="p">)</span> <span class="k">if</span> <span class="n">has_go_token</span><span class="p">(</span><span class="n">d</span><span class="p">)]</span>
+
+<span class="n">non_detectable</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span>
+                  <span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="o">~</span><span class="n">d</span><span class="p">[</span><span class="s1">'Id'</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">go_ids</span><span class="p">)]</span>
+                  <span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="p">[</span><span class="s1">'Title'</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">'go'</span><span class="p">)]</span>
+                  <span class="p">[</span><span class="s1">'Title'</span><span class="p">]</span>
+                  <span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+<span class="n">non_detectable</span> <span class="o">=</span> <span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">nlp</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">non_detectable</span><span class="p">)</span> <span class="k">if</span> <span class="n">has_go_token</span><span class="p">(</span><span class="n">d</span><span class="p">)]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">all_go_sentences</span><span class="p">),</span><span class="nb">len</span><span class="p">(</span><span class="n">detectable</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">non_detectable</span><span class="p">)</span>
+<span class="c1"># all_go_sentences = has go in title</span>
+<span class="c1"># detectable = golang confirmed by both title and tag</span>
+<span class="c1"># non_detectable = has go in title but not a tag</span>
+<span class="c1"># all_go_sentences - detectble = has a go tag but doesn't contain go in the title</span>
+
+<span class="c1">#optimal model has been found to be en_core_web_sm on logging metrics for precision, accuracy and recall for the manipulated data.</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(1858, 941, 115)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Using-our-model-on-the-detectable-class">
+<a class="anchor" href="#Using-our-model-on-the-detectable-class" aria-hidden="true"><span class="octicon octicon-link"></span></a>Using our model on the detectable class<a class="anchor-link" href="#Using-our-model-on-the-detectable-class"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">model_name</span> <span class="o">=</span> <span class="s1">'en_core_web_sm'</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model_name</span><span class="p">,</span> <span class="n">disable</span><span class="o">=</span><span class="p">[</span><span class="s1">'ner'</span><span class="p">])</span>
+
+<span class="n">method</span> <span class="o">=</span> <span class="s1">'not-verb-but-pobj'</span>
+
+<span class="n">correct</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">has_go_token</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">detectable</span><span class="p">))</span>
+<span class="n">wrong</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">has_go_token</span><span class="p">(</span><span class="n">doc</span><span class="p">)</span> <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">model</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">non_detectable</span><span class="p">))</span>
+<span class="n">precision</span> <span class="o">=</span> <span class="n">correct</span><span class="o">/</span><span class="p">(</span><span class="n">correct</span> <span class="o">+</span> <span class="n">wrong</span><span class="p">)</span>
+<span class="n">recall</span> <span class="o">=</span> <span class="n">correct</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">detectable</span><span class="p">)</span>
+<span class="n">accuracy</span> <span class="o">=</span> <span class="p">(</span><span class="n">correct</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">non_detectable</span><span class="p">)</span> <span class="o">-</span> <span class="n">wrong</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">detectable</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">non_detectable</span><span class="p">))</span>
+
+<span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">precision</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">recall</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">accuracy</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">model_name</span><span class="si">}</span><span class="s2">,</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">"</span> <span class="c1"># custom-log</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>'0.8910984848484849,1.0,0.8910984848484849,en_core_web_sm,not-verb-but-pobj'</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Metrics">
+<a class="anchor" href="#Metrics" aria-hidden="true"><span class="octicon octicon-link"></span></a>Metrics<a class="anchor-link" href="#Metrics"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">precision</span><span class="p">),</span> <span class="nb">print</span><span class="p">(</span><span class="n">recall</span><span class="p">),</span> <span class="nb">print</span><span class="p">(</span><span class="n">accuracy</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.8910984848484849
+1.0
+0.8910984848484849
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(None, None, None)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="kunal-bhar/blog"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/blog/nlp/python/spacy/english/intelligent/2022/05/24/golang-detection.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/kunal-bhar" target="_blank" title="kunal-bhar"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/kunalbhargava" target="_blank" title="kunalbhargava"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#linkedin"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
