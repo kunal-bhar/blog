@@ -24,7 +24,7 @@ title: LangWhich
 - The ML approach was also about 3x faster on processing speed.
 - Developed workflow that enables storing a trained model as a package on the Local Disk.
 
-`Deployment`: View this project on [GitHub](https://github.com/kunal-bhar/langwhich). To run locally, clone the repository and refer the commands below.
+`Deployment`: View this project on [GitHub](https://github.com/kunal-bhar/langwhich). To run locally, clone the repository in an enviornment (say, conda) and refer to the commands below.
 
 
 ## 📋 Abstract
