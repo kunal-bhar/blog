@@ -8,10 +8,10 @@
 <meta name="generator" content="Jekyll v4.1.1" />
 <meta property="og:title" content="Multipose Detection for Humans" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="Leveraging Computer Vision to detect multiple people in motion." />
-<meta property="og:description" content="Leveraging Computer Vision to detect multiple people in motion." />
-<link rel="canonical" href="https://kunal-bhar.github.io/blog/computer%20vision/python/opencv/visualizations/2022/05/16/movenet-multipose.html" />
-<meta property="og:url" content="https://kunal-bhar.github.io/blog/computer%20vision/python/opencv/visualizations/2022/05/16/movenet-multipose.html" />
+<meta name="description" content="Leveraging Computer Vision in real-time to detect multiple people in motion." />
+<meta property="og:description" content="Leveraging Computer Vision in real-time to detect multiple people in motion." />
+<link rel="canonical" href="https://kunal-bhar.github.io/blog/computer-vision/python/opencv/visualizations/2022/05/16/movenet-multipose.html" />
+<meta property="og:url" content="https://kunal-bhar.github.io/blog/computer-vision/python/opencv/visualizations/2022/05/16/movenet-multipose.html" />
 <meta property="og:site_name" content="Kunal Bhargava" />
 <meta property="og:image" content="https://kunal-bhar.github.io/blog/images/chart-preview.png" />
 <meta property="og:type" content="article" />
@@ -20,7 +20,7 @@
 <meta property="twitter:image" content="https://kunal-bhar.github.io/blog/images/chart-preview.png" />
 <meta property="twitter:title" content="Multipose Detection for Humans" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-05-16T00:00:00-05:00","datePublished":"2022-05-16T00:00:00-05:00","description":"Leveraging Computer Vision to detect multiple people in motion.","headline":"Multipose Detection for Humans","image":"https://kunal-bhar.github.io/blog/images/chart-preview.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://kunal-bhar.github.io/blog/computer%20vision/python/opencv/visualizations/2022/05/16/movenet-multipose.html"},"url":"https://kunal-bhar.github.io/blog/computer%20vision/python/opencv/visualizations/2022/05/16/movenet-multipose.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-05-16T00:00:00-05:00","datePublished":"2022-05-16T00:00:00-05:00","description":"Leveraging Computer Vision in real-time to detect multiple people in motion.","headline":"Multipose Detection for Humans","image":"https://kunal-bhar.github.io/blog/images/chart-preview.png","mainEntityOfPage":{"@type":"WebPage","@id":"https://kunal-bhar.github.io/blog/computer-vision/python/opencv/visualizations/2022/05/16/movenet-multipose.html"},"url":"https://kunal-bhar.github.io/blog/computer-vision/python/opencv/visualizations/2022/05/16/movenet-multipose.html"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://kunal-bhar.github.io/blog/feed.xml" title="Kunal Bhargava" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
@@ -75,7 +75,7 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Multipose Detection for Humans</h1><p class="page-description">Leveraging Computer Vision to detect multiple people in motion.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2022-05-16T00:00:00-05:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">Multipose Detection for Humans</h1><p class="page-description">Leveraging Computer Vision in real-time to detect multiple people in motion.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2022-05-16T00:00:00-05:00" itemprop="datePublished">
         May 16, 2022
       </time>
        • <span class="read-time" title="Estimated read time">
@@ -88,7 +88,7 @@ window.onload = wrap_img;
     
       <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
       
-        <a class="category-tags-link" href="/blog/categories/#computer vision">computer vision</a>
+        <a class="category-tags-link" href="/blog/categories/#computer-vision">computer-vision</a>
         &nbsp;
       
         <a class="category-tags-link" href="/blog/categories/#python">python</a>
@@ -171,7 +171,7 @@ window.onload = wrap_img;
 </h2>
 <p><code>Objective</code>:</p>
 <ul>
-<li>Sucessfully track people in motion by rendering keypoints, edges and connections on the active VideoCapture device (Webcam / .mp4).</li>
+<li>Sucessfully track people in motion by rendering keypoints, edges and connections on the active Video Capture device i.e. be accessible through both the Webcam and external Video files.</li>
 <li>Further enhance this setup by looping through multiple people at once and pursue Multi-pose Detection.</li>
 </ul>
 <p><code>Setup</code>: OpenCV, MoveNet.Lightning Pre-Trained Model  <a href="https://tfhub.dev/google/movenet/multipose/lightning/1">[Download]</a></p>
@@ -893,7 +893,7 @@ Successfully installed absl-py-1.0.0 cachetools-5.0.0 certifi-2021.10.8 charset-
         theme="github-light"
         crossorigin="anonymous"
         async>
-</script><a class="u-url" href="/blog/computer%20vision/python/opencv/visualizations/2022/05/16/movenet-multipose.html" hidden></a>
+</script><a class="u-url" href="/blog/computer-vision/python/opencv/visualizations/2022/05/16/movenet-multipose.html" hidden></a>
 </article>
 
       </div>
