@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>LangWhich | Kunal Bhargava</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="LangWhich" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Named Entity Recognition for Programming Languages." />
+<meta property="og:description" content="Named Entity Recognition for Programming Languages." />
+<link rel="canonical" href="https://kunal-bhar.github.io/blog/nlp/python/spacy/ner/cli/intelligent/2022/03/31/langwhich.html" />
+<meta property="og:url" content="https://kunal-bhar.github.io/blog/nlp/python/spacy/ner/cli/intelligent/2022/03/31/langwhich.html" />
+<meta property="og:site_name" content="Kunal Bhargava" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-03-31T00:00:00-05:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="LangWhich" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2022-03-31T00:00:00-05:00","datePublished":"2022-03-31T00:00:00-05:00","description":"Named Entity Recognition for Programming Languages.","headline":"LangWhich","mainEntityOfPage":{"@type":"WebPage","@id":"https://kunal-bhar.github.io/blog/nlp/python/spacy/ner/cli/intelligent/2022/03/31/langwhich.html"},"url":"https://kunal-bhar.github.io/blog/nlp/python/spacy/ner/cli/intelligent/2022/03/31/langwhich.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://kunal-bhar.github.io/blog/feed.xml" title="Kunal Bhargava" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/blog/">Kunal Bhargava</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/blog/about/">About Me</a><a class="page-link" href="/blog/search/">Search</a><a class="page-link" href="/blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">LangWhich</h1><p class="page-description">Named Entity Recognition for Programming Languages.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2022-03-31T00:00:00-05:00" itemprop="datePublished">
+        Mar 31, 2022
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      3 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/blog/categories/#nlp">nlp</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#python">python</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#spacy">spacy</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#ner">ner</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#cli">cli</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/blog/categories/#intelligent">intelligent</a>
+        
+      
+      </p>
+    
+
+    </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul id="toc" class="section-nav">
+<li class="toc-entry toc-h2"><a href="#project-at-a-glance">Project At A Glance</a></li>
+<li class="toc-entry toc-h2"><a href="#-abstract">📋 Abstract</a></li>
+<li class="toc-entry toc-h2"><a href="#-projectyml">🗂 project.yml</a>
+<ul>
+<li class="toc-entry toc-h3"><a href="#-commands">⏯ Commands</a></li>
+<li class="toc-entry toc-h3"><a href="#-workflows">⏭ Workflows</a></li>
+</ul>
+</li>
+<li class="toc-entry toc-h2"><a href="#-assets">🗂 Assets</a></li>
+<li class="toc-entry toc-h2"><a href="#-config-files">🗂 Config Files</a></li>
+<li class="toc-entry toc-h2"><a href="#-scripts">🗂 Scripts</a></li>
+<li class="toc-entry toc-h2"><a href="#-command-line-interface">📋 Command Line Interface</a></li>
+<li class="toc-entry toc-h2"><a href="#-references">📋 References</a></li>
+<li class="toc-entry toc-h2"><a href="#-note">📋 Note</a></li>
+</ul><h2 id="project-at-a-glance">
+<a class="anchor" href="#project-at-a-glance" aria-hidden="true"><span class="octicon octicon-link"></span></a>Project At A Glance</h2>
+<p><code class="language-plaintext highlighter-rouge">Objective</code>:</p>
+<ul>
+  <li>CLI project that seeks to detect programming languages using spaCy’s NER on Stack Overflow/Reddit data.</li>
+  <li>It also enables an intriguing comparison by evaluating the problem with both - Statistical as well as ML approaches for Language Processing.</li>
+  <li>LangWhich’s workflow pipelined with Sentiment Analysis can be leveraged as an attempt to investigate how different communities think about different programming languages.</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">Inspiration</code>: For a preface to this project, check out <a href="https://kunal-bhar.github.io/blog/nlp/python/spacy/english/intelligent/2022/03/23/golang-detection.html">Golang Detection from Stack Overflow Questions</a>.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Data</code>: 2000+ Labelled Titles from Stack Overflow and Reddit in JSONL format. <a href="https://github.com/kunal-bhar/langwhich/tree/main/assets">[Download]</a></p>
+
+<p><code class="language-plaintext highlighter-rouge">Implementation</code>: spaCy, Named Entity Recognition (Machine Learning Approach), Rule-Based Matching (Statistical Approach), Model Evaluation and Packaging</p>
+
+<p><code class="language-plaintext highlighter-rouge">Results</code>:</p>
+<ul>
+  <li>Both approaches were fairly successful but the Machine Learning solution had the edge on metrics as described below.</li>
+  <li>Named Entity Recognition: (Precision: 0.926), (Recall: 0.935), (f-Score: 0.931).</li>
+  <li>Rule-Based Matching: (Precision: 0.837), (Recall: 0.890), (f-Score: 0.863).</li>
+  <li>The ML approach was also about 3x faster on processing speed.</li>
+  <li>Developed workflow that enables storing a trained model as a package on the Local Disk.</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">Deployment</code>: View this project on <a href="https://github.com/kunal-bhar/langwhich">GitHub</a>. To run locally, clone the repository and refer the commands below.</p>
+
+<h2 id="-abstract">
+<a class="anchor" href="#-abstract" aria-hidden="true"><span class="octicon octicon-link"></span></a>📋 Abstract</h2>
+
+<p>The goal of the project is to make a model that could be used generally but it will specifically be used as a Named Entity Recognition exercise on Stack Overflow/Reddit with verticals for Sentiment Analysis. It is an attempt to investigate how the different communities think about different programming languages.</p>
+
+<p>Typically, two models are evaluated using this project; a pattern matching model and a spaCy NER model to pursue a comparison between rule-based Statistics and Machine Learning approaches for NLP.</p>
+
+<p>To export and run this workflow on your local machine, use the <a href="https://spacy.io/api/cli#package"><code class="language-plaintext highlighter-rouge">spacy project run package</code></a> command.</p>
+
+<!-- SPACY PROJECT: AUTO-GENERATED DOCS START (do not remove) -->
+
+<h2 id="-projectyml">
+<a class="anchor" href="#-projectyml" aria-hidden="true"><span class="octicon octicon-link"></span></a>🗂 project.yml</h2>
+
+<p>The <a href="project.yml"><code class="language-plaintext highlighter-rouge">project.yml</code></a> defines the data assets required by the
+project, as well as the available commands and workflows.</p>
+
+<h3 id="-commands">
+<a class="anchor" href="#-commands" aria-hidden="true"><span class="octicon octicon-link"></span></a>⏯ Commands</h3>
+
+<p>The following commands are defined by the project. They
+can be executed using <a href="https://spacy.io/api/cli#project-run"><code class="language-plaintext highlighter-rouge">spacy project run [name]</code></a>.
+Commands are only re-run if their inputs have changed.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">preprocess</code></td>
+      <td>Convert the data to spaCy’s binary format</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">patternmod</code></td>
+      <td>Generate a named entity recognition model based on rules.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">train</code></td>
+      <td>Train a named entity recognition model</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">evaluate</code></td>
+      <td>Evaluate the model and export metrics</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">package</code></td>
+      <td>Package the trained model so it can be installed</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">show-stats</code></td>
+      <td>Show the statistics that compares both models.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="-workflows">
+<a class="anchor" href="#-workflows" aria-hidden="true"><span class="octicon octicon-link"></span></a>⏭ Workflows</h3>
+
+<p>The following workflows are defined by the project. They
+can be executed using <a href="https://spacy.io/api/cli#project-run"><code class="language-plaintext highlighter-rouge">spacy project run [name]</code></a>
+and will run the specified commands in order. Commands are only re-run if their
+inputs have changed.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Workflow</th>
+      <th>Steps</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">all</code></td>
+      <td>
+<code class="language-plaintext highlighter-rouge">preprocess</code> → <code class="language-plaintext highlighter-rouge">patternmod</code> → <code class="language-plaintext highlighter-rouge">train</code> → <code class="language-plaintext highlighter-rouge">evaluate</code>
+</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="-assets">
+<a class="anchor" href="#-assets" aria-hidden="true"><span class="octicon octicon-link"></span></a>🗂 Assets</h2>
+
+<p>The following assets are defined by the project. They can
+be fetched by running <a href="https://spacy.io/api/cli#project-assets"><code class="language-plaintext highlighter-rouge">spacy project assets</code></a>
+in the project directory.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>File</th>
+      <th>Source</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="assets/stackoverflow-train.jsonl"><code class="language-plaintext highlighter-rouge">assets/stackoverflow-train.jsonl</code></a></td>
+      <td>Local</td>
+      <td>JSONL-formatted training data</td>
+    </tr>
+    <tr>
+      <td><a href="assets/stackoverflow-valid.jsonl"><code class="language-plaintext highlighter-rouge">assets/stackoverflow-valid.jsonl</code></a></td>
+      <td>Local</td>
+      <td>JSONL-formatted validation data</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="-config-files">
+<a class="anchor" href="#-config-files" aria-hidden="true"><span class="octicon octicon-link"></span></a>🗂 Config Files</h2>
+
+<p>The following configuration files are defined by the project. 
+| File | Source | Description |
+| — | — | — |
+| <a href="configs/config.cfg"><code class="language-plaintext highlighter-rouge">configs/config.cfg</code></a> | Local | CFG-formatted for base config |
+| <a href="configs/proglang_patterns.jsonl"><code class="language-plaintext highlighter-rouge">configs/proglang_patterns.jsonl</code></a> | Local | JSONL-formatted rule patterns |</p>
+
+<h2 id="-scripts">
+<a class="anchor" href="#-scripts" aria-hidden="true"><span class="octicon octicon-link"></span></a>🗂 Scripts</h2>
+
+<p>The following Python scripts are defined by the project.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>File</th>
+      <th>Source</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="scripts/preprocess.py"><code class="language-plaintext highlighter-rouge">scripts/preprocess.py</code></a></td>
+      <td>Local</td>
+      <td>Pre-Processing Script</td>
+    </tr>
+    <tr>
+      <td><a href="scripts/save_pattern_model.py"><code class="language-plaintext highlighter-rouge">scripts/save_pattern_model.py</code></a></td>
+      <td>Local</td>
+      <td>Pattern NER Script</td>
+    </tr>
+    <tr>
+      <td><a href="scripts/print_stats.py"><code class="language-plaintext highlighter-rouge">scripts/print_stats.py</code></a></td>
+      <td>Local</td>
+      <td>Results Comparison Script</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="-command-line-interface">
+<a class="anchor" href="#-command-line-interface" aria-hidden="true"><span class="octicon octicon-link"></span></a>📋 Command Line Interface</h2>
+
+<p>The commands and workflows can be used with the CLI as follows:</p>
+
+<p>Initialize: <code class="language-plaintext highlighter-rouge">project run</code></p>
+
+<p><img src="https://github.com/kunal-bhar/langwhich/blob/main/imgs/cli-initialize.PNG" alt="Initialization"></p>
+
+<p>Command Execution: <code class="language-plaintext highlighter-rouge">project preprocess</code></p>
+
+<p><img src="https://github.com/kunal-bhar/langwhich/blob/main/imgs/cli-preprocess.PNG" alt="Initialization"></p>
+
+<p>Workflow Execution: <code class="language-plaintext highlighter-rouge">project all</code></p>
+
+<p><img src="https://github.com/kunal-bhar/langwhich/blob/main/imgs/cli-all-1.PNG" alt="Initialization"></p>
+
+<p><img src="https://github.com/kunal-bhar/langwhich/blob/main/imgs/cli-all-2.PNG" alt="Initialization"></p>
+
+<p>Metrics: <code class="language-plaintext highlighter-rouge">project show-stats</code></p>
+
+<p><img src="https://github.com/kunal-bhar/langwhich/blob/main/imgs/cli-show-stats.PNG" alt="Initialization"></p>
+
+<h2 id="-references">
+<a class="anchor" href="#-references" aria-hidden="true"><span class="octicon octicon-link"></span></a>📋 References</h2>
+
+<p><a href="https://spacy.io/usage/projects"><code class="language-plaintext highlighter-rouge">spaCy and spaCy Projects: Documentation</code></a></p>
+
+<p><a href="https://github.com/explosion/projects"><code class="language-plaintext highlighter-rouge">Explosion Templates: GitHub Repository</code></a></p>
+
+<p><a href="https://github.com/koaning"><code class="language-plaintext highlighter-rouge">Vincent Warmerdam: GitHub</code></a></p>
+
+<!-- SPACY PROJECT: AUTO-GENERATED DOCS END (do not remove) -->
+<h2 id="-note">
+<a class="anchor" href="#-note" aria-hidden="true"><span class="octicon octicon-link"></span></a>📋 Note</h2>
+
+<p>Part of this documentation has been auto-generated using the <a href="https://spacy.io/api/cli#project-document"><code class="language-plaintext highlighter-rouge">spacy project document</code></a> command!</p>
+
+  </div><a class="u-url" href="/blog/nlp/python/spacy/ner/cli/intelligent/2022/03/31/langwhich.html" hidden></a>
+</article>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/kunal-bhar" target="_blank" title="kunal-bhar"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/kunalbhargava" target="_blank" title="kunalbhargava"><svg class="svg-icon grey"><use xlink:href="/blog/assets/minima-social-icons.svg#linkedin"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
