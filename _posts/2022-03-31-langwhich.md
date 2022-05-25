@@ -27,7 +27,7 @@ title: LangWhich
 `Deployment`: View this project on [GitHub](https://github.com/kunal-bhar/langwhich). To run locally, clone the repository in an enviornment (say, conda) and refer to the commands below.
 
 
-## 📋 Abstract
+## Abstract
 
 The goal of the project is to make a model that could be used generally but it will specifically be used as a Named Entity Recognition exercise on Stack Overflow/Reddit with verticals for Sentiment Analysis. It is an attempt to investigate how the different communities think about different programming languages.
 
@@ -39,12 +39,12 @@ To export and run this workflow on your local machine, use the [`spacy project r
 <!-- SPACY PROJECT: AUTO-GENERATED DOCS START (do not remove) -->
 
 
-## 🗂 project.yml
+## project.yml
 
 The [`project.yml`](project.yml) defines the data assets required by the
 project, as well as the available commands and workflows. 
 
-### ⏯ Commands
+### Commands
 
 The following commands are defined by the project. They
 can be executed using [`spacy project run [name]`](https://spacy.io/api/cli#project-run).
@@ -59,7 +59,7 @@ Commands are only re-run if their inputs have changed.
 | `package` | Package the trained model so it can be installed |
 | `show-stats` | Show the statistics that compares both models. |
 
-### ⏭ Workflows
+### Workflows
 
 The following workflows are defined by the project. They
 can be executed using [`spacy project run [name]`](https://spacy.io/api/cli#project-run)
@@ -70,7 +70,7 @@ inputs have changed.
 | --- | --- |
 | `all` | `preprocess` &rarr; `patternmod` &rarr; `train` &rarr; `evaluate` |
 
-## 🗂 Assets
+## Assets
 
 The following assets are defined by the project. They can
 be fetched by running [`spacy project assets`](https://spacy.io/api/cli#project-assets)
@@ -81,15 +81,16 @@ in the project directory.
 | [`assets/stackoverflow-train.jsonl`](assets/stackoverflow-train.jsonl) | Local | JSONL-formatted training data |
 | [`assets/stackoverflow-valid.jsonl`](assets/stackoverflow-valid.jsonl) | Local | JSONL-formatted validation data |
 
-## 🗂 Config Files
+## Config Files
 
 The following configuration files are defined by the project. 
+
 | File | Source | Description |
 | --- | --- | --- |
 | [`configs/config.cfg`](configs/config.cfg) | Local | CFG-formatted for base config |
 | [`configs/proglang_patterns.jsonl`](configs/proglang_patterns.jsonl) | Local | JSONL-formatted rule patterns |
 
-## 🗂 Scripts
+## Scripts
 
 The following Python scripts are defined by the project.
 
@@ -99,31 +100,31 @@ The following Python scripts are defined by the project.
 | [`scripts/save_pattern_model.py`](scripts/save_pattern_model.py) | Local | Pattern NER Script |
 | [`scripts/print_stats.py`](scripts/print_stats.py) | Local | Results Comparison Script |
 
-## 📋 Command Line Interface
+## Command Line Interface
 
 The commands and workflows can be used with the CLI as follows:
 
 Initialize: `project run` 
 
-![Initialization](https://github.com/kunal-bhar/langwhich/blob/main/imgs/cli-initialize.PNG)
+![Initialization](/images/langwhich/cli-initialize.PNG)
 
 Command Execution: `project preprocess`
 
-![Initialization](https://github.com/kunal-bhar/langwhich/blob/main/imgs/cli-preprocess.PNG)
+![Preprocessing](/images/langwhich/cli-preprocess.PNG)
 
 Workflow Execution: `project all`
 
 
-![Initialization](https://github.com/kunal-bhar/langwhich/blob/main/imgs/cli-all-1.PNG)
+![Workflow Run](/images/langwhich/cli-all-1.PNG)
 
-![Initialization](https://github.com/kunal-bhar/langwhich/blob/main/imgs/cli-all-2.PNG)
+![Workflow Run](/images/langwhich/cli-all-2.PNG)
 
 Metrics: `project show-stats`
 
-![Initialization](https://github.com/kunal-bhar/langwhich/blob/main/imgs/cli-show-stats.PNG)
+![Stats](/images/langwhich/cli-show-stats.PNG)
 
 
-## 📋 References
+## References
 
 [`spaCy and spaCy Projects: Documentation`](https://spacy.io/usage/projects)
 
@@ -134,6 +135,6 @@ Metrics: `project show-stats`
 
 
 <!-- SPACY PROJECT: AUTO-GENERATED DOCS END (do not remove) -->
-## 📋 Note
+## Note
 
 Part of this documentation has been auto-generated using the [`spacy project document`](https://spacy.io/api/cli#project-document) command!
