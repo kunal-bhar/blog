@@ -4,7 +4,8 @@ layout: post
 description: Named Entity Recognition for Programming Languages.
 categories: [nlp, python, spacy, ner, cli, intelligent]
 title: LangWhich
-image: images/langwhich.PNG
+image: {{ site.baseurl }}images/langwhich.png
+hide: false
 ---
 ## Project At A Glance
 `Objective`: 
