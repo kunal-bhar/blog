@@ -1,9 +1,9 @@
 ---
 toc: true
 layout: post
-description: Probability Distributions for Python.
+description: Open-Source Python Package optimized for operations on Gaussian and Binomial data.
 categories: [python, math, probability, visualizations]
-title: probplotlib- Open Source Python Library
+title: probplotlib- Probability Distributions for Python
 image: images/probplotlib.PNG
 ---
 ## Project At A Glance
