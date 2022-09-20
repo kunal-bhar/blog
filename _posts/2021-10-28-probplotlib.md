@@ -4,7 +4,7 @@ layout: post
 description: Probability Distributions for Python.
 categories: [python, math, probability, visualizations]
 title: probplotlib- Open Source Python Library
-image: images\probplotlib.PNG
+image: images/probplotlib.PNG
 ---
 ## Project At A Glance
 `Objective`: Higher-order mathematical operations using Python3.
