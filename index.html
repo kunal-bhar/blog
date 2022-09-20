@@ -19,8 +19,39 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"WebSite","headline":"Kunal Bhargava","image":"https://kunal-bhar.github.io/blog/images/logo.png","name":"Kunal Bhargava","url":"https://kunal-bhar.github.io/blog/"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://kunal-bhar.github.io/blog/feed.xml" title="Kunal Bhargava" /><link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="/blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://kunal-bhar.github.io/blog/feed.xml" title="Kunal Bhargava" /><!-- the google_analytics_id gets auto inserted from the config file -->
+
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-NN8NK1TGDT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-NN8NK1TGDT');
+</script>
+
+
+<link rel="shortcut icon" type="image/x-icon" href="/blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.css" integrity="sha512-h7nl+xz8wgDlNM4NqKEM4F1NkIRS17M9+uJwIGwuo8vGqIl4BhuCKdxjWEINm+xyrUjNCnK5dCrhM0sj+wTIXw==" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/katex.min.js" integrity="sha512-/CMIhXiDA3m2c9kzRyd97MTb3MC6OVnx4TElQ7fkkoRghwDf6gi41gaT1PwF270W6+J60uTmwgeRpNpJdRV6sg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.12.0/contrib/auto-render.min.js" integrity="sha512-Do7uJAaHZm5OLrIv/yN4w0iG1dbu01kzdMNnFfu/mAqgUk6Nniv2JYHcwH+cNwjqgLcqcuBBk+JRvprLVI8azg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha512-0doc9hKxR3PYwso42RD1p5ySZpzzuDiOwMrdCEh2WdJZCjcmFKc/wEnL+z8fBQrnHoiNWbo+3fiGkOYXBdQp4A==" crossorigin="anonymous"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement( document.body, {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "[%", right: "%]", display: true},
+            {left: "$", right: "$", display: false}
+        ]}
+        );
+    });
+    </script>
+
 
 <script>
 function wrap_img(fn) {
@@ -97,57 +128,113 @@ You can edit the `index.html` file to change this content. -->
 
    <!-- Assemble final sorted posts array -->
   
-  <ul class="post-list"><li><h3>
-    <a class="post-link" href="/blog/audio/python/pipeline/visualizations/2022/05/21/deep-audify.html">
-    Deep Audify- Deep Neural Networks for Audio Processing
-    </a>
-</h3><p class="post-meta-description">Tracing and Quantifying Capuchinbird's distinct calls using audio signals from a rainforest.</p><p class="post-meta">May 21, 2022</p>
-</li><li><h3>
-    <a class="post-link" href="/blog/computer-vision/python/opencv/visualizations/2022/05/16/movenet-multipose.html">
-    Multipose Detection for Humans
-    </a>
-</h3><p class="post-meta-description">Leveraging Computer Vision in real-time to detect multiple people in motion.</p><p class="post-meta">May 16, 2022</p>
-</li><li><h3>
-    <a class="post-link" href="/blog/nlp/python/spacy/ner/cli/intelligent/2022/03/31/langwhich.html">
-    LangWhich
-    </a>
-</h3><p class="post-meta-description">Named Entity Recognition for Programming Languages.</p><p class="post-meta">Mar 31, 2022</p>
-</li><li><h3>
-    <a class="post-link" href="/blog/nlp/python/spacy/english/intelligent/2022/03/23/golang-detection.html">
-    Golang Detection from Stack Overflow Questions
-    </a>
-</h3><p class="post-meta-description">Pipelining an NLP solution that provides semantic value for English homonyms.</p><p class="post-meta">Mar 23, 2022</p>
-</li><li><h3>
-    <a class="post-link" href="/blog/time-series/python/lstm/visualizations/2022/03/20/hourly-temp-forecasting.html">
-    Hourly Temperature Forecasting
-    </a>
-</h3><p class="post-meta-description">Studying trends in the weather recorded at the Max Planck Institute.</p><p class="post-meta">Mar 20, 2022</p>
-</li><li><h3>
-    <a class="post-link" href="/blog/time-series/python/lstm/visualizations/2022/03/19/apple-stock-forecasting.html">
-    Apple Stock-Price Forecasting
-    </a>
-</h3><p class="post-meta-description">Laying down future stocks precise to the dot. In other words, an attempt to do the impossible.</p><p class="post-meta">Mar 19, 2022</p>
-</li><li><h3>
-    <a class="post-link" href="/blog/nlp/python/reddit/news/2022/03/17/reddit-news-analysis.html">
-    Reddit Headline Analysis
-    </a>
-</h3><p class="post-meta-description">Biopsying r/worldnews to see if the news for the general public really is all 'negative'.</p><p class="post-meta">Mar 17, 2022</p>
-</li><li><h3>
-    <a class="post-link" href="/blog/python/math/lstm/visualizations/2022/03/11/concurrent-num-prognosis.html">
-    Concurrent Number Prognosis
-    </a>
-</h3><p class="post-meta-description">Enabling present relationships to extrapolate a series.</p><p class="post-meta">Mar 11, 2022</p>
-</li><li><h3>
-    <a class="post-link" href="/blog/nlp/python/english/visualizations/2022/03/10/shakespeare-semantics.html">
-    Shakespearean English Semantics
-    </a>
-</h3><p class="post-meta-description">Analyzing patterns in some of the British author's finest works.</p><p class="post-meta">Mar 10, 2022</p>
-</li><li><h3>
-    <a class="post-link" href="/blog/python/math/probability/visualizations/2021/10/28/probplotlib.html">
-    probplotlib- Open Source Python Library
-    </a>
-</h3><p class="post-meta-description">Probability Distributions for Python.</p><p class="post-meta">Oct 28, 2021</p>
-</li></ul>
+  <ul class="post-list"><li><div class="Box box-shadow-medium rounded-1 col-12"><div class="col-4 d-table-cell p-3 v-align-middle">
+        <img class="image-preview " src="/blog/images/chart-preview.png" />
+      </div><div class="col-8 d-table-cell p-3">
+        <h3>
+          <a class="post-link" href="/blog/audio/python/pipeline/visualizations/2022/05/21/deep-audify.html">
+            Deep Audify- Deep Neural Networks for Audio Processing
+          </a>
+        </h3>
+        <p class="post-meta-description">Tracing and Quantifying Capuchinbird's distinct calls using audio signals from a rainforest.</p>
+          <p class="post-meta">May 21, 2022</p>
+      </div>
+  </div></li><li><div class="Box box-shadow-medium rounded-1 col-12"><div class="col-4 d-table-cell p-3 v-align-middle">
+        <img class="image-preview " src="/blog/images/chart-preview.png" />
+      </div><div class="col-8 d-table-cell p-3">
+        <h3>
+          <a class="post-link" href="/blog/computer-vision/python/opencv/visualizations/2022/05/16/movenet-multipose.html">
+            Multipose Detection for Humans
+          </a>
+        </h3>
+        <p class="post-meta-description">Leveraging Computer Vision in real-time to detect multiple people in motion.</p>
+          <p class="post-meta">May 16, 2022</p>
+      </div>
+  </div></li><li><div class="Box box-shadow-medium rounded-1 col-12"><div class="col-8 d-table-cell p-3">
+        <h3>
+          <a class="post-link" href="/blog/nlp/python/spacy/ner/cli/intelligent/2022/03/31/langwhich.html">
+            LangWhich
+          </a>
+        </h3>
+        <p class="post-meta-description">Named Entity Recognition for Programming Languages.</p>
+          <p class="post-meta">Mar 31, 2022</p>
+      </div>
+  </div></li><li><div class="Box box-shadow-medium rounded-1 col-12"><div class="col-4 d-table-cell p-3 v-align-middle">
+        <img class="image-preview " src="/blog/images/chart-preview.png" />
+      </div><div class="col-8 d-table-cell p-3">
+        <h3>
+          <a class="post-link" href="/blog/nlp/python/spacy/english/intelligent/2022/03/23/golang-detection.html">
+            Golang Detection from Stack Overflow Questions
+          </a>
+        </h3>
+        <p class="post-meta-description">Pipelining an NLP solution that provides semantic value for English homonyms.</p>
+          <p class="post-meta">Mar 23, 2022</p>
+      </div>
+  </div></li><li><div class="Box box-shadow-medium rounded-1 col-12"><div class="col-4 d-table-cell p-3 v-align-middle">
+        <img class="image-preview " src="/blog/images/chart-preview.png" />
+      </div><div class="col-8 d-table-cell p-3">
+        <h3>
+          <a class="post-link" href="/blog/time-series/python/lstm/visualizations/2022/03/20/hourly-temp-forecasting.html">
+            Hourly Temperature Forecasting
+          </a>
+        </h3>
+        <p class="post-meta-description">Studying trends in the weather recorded at the Max Planck Institute.</p>
+          <p class="post-meta">Mar 20, 2022</p>
+      </div>
+  </div></li><li><div class="Box box-shadow-medium rounded-1 col-12"><div class="col-4 d-table-cell p-3 v-align-middle">
+        <img class="image-preview " src="/blog/images/chart-preview.png" />
+      </div><div class="col-8 d-table-cell p-3">
+        <h3>
+          <a class="post-link" href="/blog/time-series/python/lstm/visualizations/2022/03/19/apple-stock-forecasting.html">
+            Apple Stock-Price Forecasting
+          </a>
+        </h3>
+        <p class="post-meta-description">Laying down future stocks precise to the dot. In other words, an attempt to do the impossible.</p>
+          <p class="post-meta">Mar 19, 2022</p>
+      </div>
+  </div></li><li><div class="Box box-shadow-medium rounded-1 col-12"><div class="col-4 d-table-cell p-3 v-align-middle">
+        <img class="image-preview " src="/blog/images/chart-preview.png" />
+      </div><div class="col-8 d-table-cell p-3">
+        <h3>
+          <a class="post-link" href="/blog/nlp/python/reddit/news/2022/03/17/reddit-news-analysis.html">
+            Reddit Headline Analysis
+          </a>
+        </h3>
+        <p class="post-meta-description">Biopsying r/worldnews to see if the news for the general public really is all 'negative'.</p>
+          <p class="post-meta">Mar 17, 2022</p>
+      </div>
+  </div></li><li><div class="Box box-shadow-medium rounded-1 col-12"><div class="col-4 d-table-cell p-3 v-align-middle">
+        <img class="image-preview " src="/blog/images/chart-preview.png" />
+      </div><div class="col-8 d-table-cell p-3">
+        <h3>
+          <a class="post-link" href="/blog/python/math/lstm/visualizations/2022/03/11/concurrent-num-prognosis.html">
+            Concurrent Number Prognosis
+          </a>
+        </h3>
+        <p class="post-meta-description">Enabling present relationships to extrapolate a series.</p>
+          <p class="post-meta">Mar 11, 2022</p>
+      </div>
+  </div></li><li><div class="Box box-shadow-medium rounded-1 col-12"><div class="col-4 d-table-cell p-3 v-align-middle">
+        <img class="image-preview " src="/blog/images/chart-preview.png" />
+      </div><div class="col-8 d-table-cell p-3">
+        <h3>
+          <a class="post-link" href="/blog/nlp/python/english/visualizations/2022/03/10/shakespeare-semantics.html">
+            Shakespearean English Semantics
+          </a>
+        </h3>
+        <p class="post-meta-description">Analyzing patterns in some of the British author's finest works.</p>
+          <p class="post-meta">Mar 10, 2022</p>
+      </div>
+  </div></li><li><div class="Box box-shadow-medium rounded-1 col-12"><div class="col-8 d-table-cell p-3">
+        <h3>
+          <a class="post-link" href="/blog/python/math/probability/visualizations/2021/10/28/probplotlib.html">
+            probplotlib- Open Source Python Library
+          </a>
+        </h3>
+        <p class="post-meta-description">Probability Distributions for Python.</p>
+          <p class="post-meta">Oct 28, 2021</p>
+      </div>
+  </div></li></ul>
 
     </div>
       </div>
