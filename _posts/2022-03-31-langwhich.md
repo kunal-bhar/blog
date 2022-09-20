@@ -4,7 +4,7 @@ layout: post
 description: Named Entity Recognition for Programming Languages.
 categories: [nlp, python, spacy, ner, cli, intelligent]
 title: LangWhich
-images: images/langwhich.PNG
+image: images/langwhich.PNG
 ---
 ## Project At A Glance
 `Objective`: 
@@ -107,22 +107,33 @@ The commands and workflows can be used with the CLI as follows:
 
 <!-- Initialize: `project run`  -->
 
-![Initialization]({{ site.baseurl }}/images/cli-initialize.PNG "Initialize `project run`")
+![Initialization]({{ site.baseurl }}/images/cli-initialize.PNG)
+
+{% include info.html text="Initialized `project run`." %}
+
 
 <!-- Command Execution: `project preprocess` -->
 
-![Preprocessing]({{ site.baseurl }}/images/cli-preprocess.PNG "Command Execution: `project preprocess`")
+![Preprocessing]({{ site.baseurl }}/images/cli-preprocess.PNG)
+
+{% include info.html text="Executed the `project preprocess` command." %}
+
 
 <!-- Workflow Execution: `project all` -->
 
+![Workflow Run]({{ site.baseurl }}/images/cli-all-1.PNG)
 
-![Workflow Run]({{ site.baseurl }}/images/cli-all-1.PNG "Workflow Execution: `project all`")
+{% include info.html text="The `project all` command pipelines and runs the complete workflow." %}
+
 
 <!-- ![Workflow Run](/images/cli-all-2.PNG) -->
 
 <!-- Metrics: `project show-stats` -->
 
-![Stats]({{ site.baseurl }}/images/cli-show-stats.PNG "Metrics: `project show-stats`")
+![Stats]({{ site.baseurl }}/images/cli-show-stats.PNG)
+
+{% include info.html text="Metrics on display with the `project show-stats` command." %}
+
 
 
 ## References
