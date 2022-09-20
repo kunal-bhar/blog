@@ -4,6 +4,7 @@ layout: post
 description: Named Entity Recognition for Programming Languages.
 categories: [nlp, python, spacy, ner, cli, intelligent]
 title: LangWhich
+images: images\langwhich.png
 ---
 ## Project At A Glance
 `Objective`: 
@@ -106,22 +107,22 @@ The commands and workflows can be used with the CLI as follows:
 
 Initialize: `project run` 
 
-![Initialization](/images/langwhich/cli-initialize.PNG)
+![Initialization](/images/cli-initialize.PNG)
 
 Command Execution: `project preprocess`
 
-![Preprocessing](/images/langwhich/cli-preprocess.PNG)
+![Preprocessing](/images/cli-preprocess.PNG)
 
 Workflow Execution: `project all`
 
 
-![Workflow Run](/images/langwhich/cli-all-1.PNG)
+![Workflow Run](/images/cli-all-1.PNG)
 
-![Workflow Run](/images/langwhich/cli-all-2.PNG)
+<!-- ![Workflow Run](/images/cli-all-2.PNG) -->
 
 Metrics: `project show-stats`
 
-![Stats](/images/langwhich/cli-show-stats.PNG)
+![Stats](/images/cli-show-stats.PNG)
 
 
 ## References
